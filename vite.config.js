@@ -11,5 +11,9 @@ export default defineConfig({
   server: {
     // Needed when testing on a phone over the local network.
     host: true,
+    // Pinned: without strictPort, a busy 5173 silently becomes 5174, and the
+    // firewall rule opened for 5173 would then let nothing through.
+    port: 5173,
+    strictPort: true,
   },
 });
