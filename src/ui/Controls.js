@@ -1,9 +1,15 @@
 import Phaser from 'phaser';
+import PixelText from './PixelText.js';
 import { HEX } from '../lib/palette.js';
+import { GIFT } from '../config/gift.js';
 
 const DEAD_ZONE = 4;      // pixels of slack before the stick reads as movement
 const STICK_RANGE = 16;   // distance at which the stick is fully pushed
 const UI_DEPTH = 900;
+const STICK_MARGIN = STICK_RANGE + 10;  // full push plus the knob's radius: keeps the knob on screen
+
+// Shared across scenes: once she has moved with the stick, the hint is done.
+let stickLearned = false;
 
 /**
  * Merges keyboard and touch into one directional vector plus an "interact"
@@ -75,6 +81,59 @@ export default class Controls {
     this.buttonPointerId = null;
     this.stickPointerId = null;
     this.stickOrigin = new Phaser.Math.Vector2();
+
+    this.#buildStickHint();
+  }
+
+  /**
+   * On touch screens the stick is invisible until a finger lands, so a ghost
+   * stick and a line of text show where to press until it has been used once.
+   */
+  #buildStickHint() {
+    const scene = this.scene;
+    const { height } = scene.scale.gameSize;
+    if (stickLearned || !scene.sys.game.device.input.touch) return;
+
+    const x = 40;
+    const y = height - 36;
+    const base = scene.add.image(x, y, 'ui-stick-base').setAlpha(0.3);
+    const knob = scene.add.image(x, y, 'ui-stick-knob').setAlpha(0.5);
+    const label = new PixelText(scene, 0, 0, GIFT.touchHint, { color: HEX.cream, align: 'center' });
+    const labelX = Math.max(8, Math.round(x - label.textWidth / 2));
+    const labelY = y - 23 - label.textHeight - 8;
+    label.setPosition(labelX, labelY);
+
+    // A dark panel behind the text so it stays readable over the furniture.
+    const panel = scene.add.rectangle(labelX - 4, labelY - 3, label.textWidth + 8, label.textHeight + 6, HEX.black, 0.75)
+      .setOrigin(0, 0);
+
+    this.stickHint = [base, knob, panel, label];
+    this.stickHint.forEach((item) => item.setDepth(UI_DEPTH).setScrollFactor(0));
+    label.setDepth(UI_DEPTH + 1);
+
+    // The knob nudges right and back, miming a drag.
+    this.stickHintTween = scene.tweens.add({
+      targets: knob,
+      x: x + 10,
+      duration: 600,
+      ease: 'Sine.easeInOut',
+      yoyo: true,
+      repeat: -1,
+      repeatDelay: 300,
+    });
+  }
+
+  #setStickHintVisible(visible) {
+    if (!this.stickHint) return;
+    this.stickHint.forEach((item) => item.setVisible(visible));
+  }
+
+  #dismissStickHint() {
+    stickLearned = true;
+    if (!this.stickHint) return;
+    this.stickHintTween.remove();
+    this.stickHint.forEach((item) => item.destroy());
+    this.stickHint = null;
   }
 
   #bindPointers() {
@@ -91,10 +150,15 @@ export default class Controls {
       }
 
       if (pointer.x < halfWidth) {
+        const { width, height } = scene.scale.gameSize;
+        // Pulled in from the edges so the base is never cut off by the screen.
+        const x = Phaser.Math.Clamp(pointer.x, STICK_MARGIN, width - STICK_MARGIN);
+        const y = Phaser.Math.Clamp(pointer.y, STICK_MARGIN, height - STICK_MARGIN);
         this.stickPointerId = pointer.id;
-        this.stickOrigin.set(pointer.x, pointer.y);
-        this.stickBase.setPosition(pointer.x, pointer.y).setAlpha(0.45);
-        this.stickKnob.setPosition(pointer.x, pointer.y).setAlpha(0.7);
+        this.stickOrigin.set(x, y);
+        this.stickBase.setPosition(x, y).setAlpha(0.45);
+        this.stickKnob.setPosition(x, y).setAlpha(0.7);
+        this.#dismissStickHint();
       } else {
         // A tap on the right half acts as the action button too.
         this.queueInteract();
@@ -173,6 +237,7 @@ export default class Controls {
   /** Hides the touch overlay, e.g. while a dialogue is open. */
   setVisible(visible) {
     this.button.setVisible(visible);
+    this.#setStickHintVisible(visible);
     if (!visible) {
       this.stickPointerId = null;
       this.stickBase.setAlpha(0);
@@ -187,6 +252,7 @@ export default class Controls {
     this.scene.input.off('pointerup');
     this.scene.input.off('pointerupoutside');
     [this.stickBase, this.stickKnob, this.button].forEach((item) => item.destroy());
+    if (this.stickHint) this.stickHint.forEach((item) => item.destroy());
   }
 }
 

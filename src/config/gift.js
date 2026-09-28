@@ -25,6 +25,9 @@ export const GIFT = {
   subtitle: 'UNA PEQUEÑA AVENTURA',
   pressStart: 'TOCÁ PARA EMPEZAR',
 
+  /** Shown over the ghost joystick on phones until she first moves. */
+  touchHint: 'TOCÁ Y ARRASTRÁ\nPARA MOVERTE',
+
   /** Shown once, when the room scene starts for the first time. */
   intro: [
     'ESTE ES NUESTRO CUARTO.',
