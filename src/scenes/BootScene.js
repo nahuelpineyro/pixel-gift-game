@@ -15,7 +15,18 @@ export default class BootScene extends Phaser.Scene {
     createFontTextures(this);
     createAllTextures(this);
     this.#createPlayerAnimations();
+    this.#createAlmendraAnimation();
     this.scene.start('Title');
+  }
+
+  /** Almendra's tail never stops. */
+  #createAlmendraAnimation() {
+    this.anims.create({
+      key: 'almendra-wag',
+      frames: [{ key: 'prop-almendra-0' }, { key: 'prop-almendra-1' }],
+      frameRate: 3,
+      repeat: -1,
+    });
   }
 
   #createPlayerAnimations() {

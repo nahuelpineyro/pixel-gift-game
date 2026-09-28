@@ -22,14 +22,24 @@ export const PALETTE = {
   black: '#1a1220',
   shadow: '#221a2c',
 
-  skin: '#f0c090',
-  hair: '#3a2a20',
+  skin: '#f5cfa8',
+  skinShade: '#dfae85',
+  hair: '#4a3122',
+  hairLight: '#63432e',
   shirt: '#4aa3c0',
   shirtDark: '#2f7a94',
   pants: '#3a4a7a',
 
   leaf: '#4a9a5a',
   leafDark: '#2f6e3e',
+
+  // Almendra: a warm brownish gold, not a metallic one.
+  dog: '#b8823c',
+  dogDark: '#8a5a26',
+  dogLight: '#d2a15a',
+
+  glass: '#7fb6a4',
+  glassDark: '#4d8271',
 
   gold: '#f0c040',
   goldDark: '#c08a1e',

@@ -55,34 +55,43 @@ export const GIFT = {
       ],
     },
     {
-      id: 'books',
-      name: 'LOS LIBROS',
-      lines: [
-        'EL LIBRO QUE ME PRESTASTE\nY NUNCA TE DEVOLVÍ.',
-        'LO LEÍ DOS VECES. LA SEGUNDA\nSOLO POR TUS ANOTACIONES.',
-      ],
-    },
-    {
-      id: 'guitar',
-      name: 'LA GUITARRA',
-      lines: [
-        'LA CANCIÓN QUE TE TOQUÉ MAL\nUNAS CUARENTA VECES.',
-        'VOS IGUAL APLAUDISTE\nTODAS LAS VECES.',
-      ],
-    },
-    {
       id: 'mug',
-      name: 'LA TAZA',
+      name: 'EL CAFÉ',
       lines: [
-        'EL CAFÉ DE LAS MAÑANAS\nLENTAS.',
-        'DOS TAZAS, UNA MANTA,\nCERO APURO.',
+        'EL CAFÉ QUE COMPARTIMOS\nTODOS LOS DÍAS.',
+        'NO FALTÓ NI UNO SOLO.\nNI UNO.',
+      ],
+    },
+    {
+      id: 'almendra',
+      name: 'ALMENDRA',
+      lines: [
+        'ALMENDRA.\nLA PERRITA QUE AMAMOS TANTO.',
+        'MEDIO METRO DE PERRA\nY DOS METROS DE AMOR.',
+        'NOS ELIGIÓ A LOS DOS\nEL MISMO DÍA.',
+      ],
+    },
+    {
+      id: 'letter',
+      name: 'LA CARTA',
+      lines: [
+        'LA LISTA DE TODAS LAS OBRAS\nQUE HICIMOS JUNTOS EN LA CASA.',
+        'CADA PARED, CADA MUEBLE,\nCADA COSA QUE ARREGLAMOS.',
+        'NO CONSTRUIMOS UNA CASA.\nCONSTRUIMOS NUESTRA CASA.',
       ],
     },
   ],
 
   /** Flavour text for the props that are not memories. */
   scenery: {
-    bed: ['LAS MAÑANAS EN LAS QUE\nNINGUNO SE QUERÍA LEVANTAR.'],
+    bed: [
+      'LA CAMA DE LA QUE NO QUEREMOS\nSALIR AL DESPERTAR.',
+      'CINCO MINUTOS MÁS.\nSIEMPRE CINCO MINUTOS MÁS.',
+    ],
+    bottle: [
+      'EL LUBRICANTE DEL AMOR.',
+      'NO PREGUNTES QUÉ HACE ACÁ.\nYA SABÉS MUY BIEN QUÉ HACE ACÁ.',
+    ],
     plant: ['LA PLANTA QUE JURASTE\nQUE IBAS A MATAR.', 'SIGUE VIVA. COMO NOSOTROS.'],
     rug: ['ACÁ BAILAMOS UNA VEZ,\nSIN MÚSICA.'],
   },

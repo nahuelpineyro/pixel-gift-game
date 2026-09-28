@@ -20,13 +20,17 @@ const WALL_PROPS = [
 /** Floor props. `y` is the top edge; `solid` is the footprint feet cannot enter. */
 const FLOOR_PROPS = [
   { key: 'prop-rug', x: 96, y: 120, depth: 1 },
+  { key: 'prop-dogbed', x: 232, y: 102 },
   { key: 'prop-bed', x: 14, y: 54, solid: { x: 14, y: 60, w: 52, h: 54 } },
-  { key: 'prop-shelf', x: 250, y: 44, solid: { x: 250, y: 88, w: 40, h: 14 } },
+  { key: 'prop-bottle', x: 72, y: 98 },
   { key: 'prop-desk', x: 146, y: 94, solid: { x: 146, y: 108, w: 46, h: 14 } },
   { key: 'prop-mug', x: 162, y: 86 },
-  { key: 'prop-guitar', x: 228, y: 100, solid: { x: 228, y: 128, w: 14, h: 8 } },
   { key: 'prop-plant', x: 20, y: 124, solid: { x: 20, y: 142, w: 18, h: 8 } },
 ];
+
+/** Almendra sits down in her cushion; the letter is pinned to the back wall. */
+const ALMENDRA = { x: 236, y: 105, depth: 123 };
+const LETTER = { x: 286, y: 46 };
 
 /**
  * Everything the player can interact with. `x`/`y` is where she has to stand
@@ -35,14 +39,18 @@ const FLOOR_PROPS = [
 const INTERACTABLES = [
   { id: 'photo', kind: 'memory', x: 212, y: 58, markerX: 212, markerY: 38 },
   { id: 'window', kind: 'memory', x: 84, y: 58, markerX: 84, markerY: 42 },
-  { id: 'books', kind: 'memory', x: 270, y: 108, markerX: 270, markerY: 34 },
-  { id: 'guitar', kind: 'memory', x: 235, y: 142, markerX: 235, markerY: 90 },
   { id: 'mug', kind: 'memory', x: 169, y: 130, markerX: 167, markerY: 76 },
-  { id: 'bed', kind: 'scenery', x: 78, y: 88, markerX: 40, markerY: 44 },
+  { id: 'almendra', kind: 'memory', x: 249, y: 134, markerX: 249, markerY: 86 },
+  { id: 'letter', kind: 'memory', x: 286, y: 62, markerX: 286, markerY: 24 },
+  { id: 'bed', kind: 'scenery', x: 80, y: 90, markerX: 40, markerY: 44 },
+  { id: 'bottle', kind: 'scenery', x: 80, y: 122, markerX: 76, markerY: 88 },
   { id: 'plant', kind: 'scenery', x: 46, y: 144, markerX: 29, markerY: 112 },
   { id: 'rug', kind: 'scenery', x: 124, y: 148, markerX: 124, markerY: 134 },
   { id: 'door', kind: 'door', x: 160, y: 58, markerX: 160, markerY: 26 },
 ];
+
+/** How close she has to be before the letter unfolds on its own. */
+const LETTER_OPEN_RADIUS = 34;
 
 const DOOR = { x: 145, y: 2 };
 
@@ -70,6 +78,8 @@ export default class RoomScene extends Phaser.Scene {
       image.setDepth(depth ?? y + image.height);
     });
 
+    this.#createAlmendra();
+    this.#createLetter();
     this.#createPlayer();
     this.#createMarker();
     this.#createHud();
@@ -79,6 +89,37 @@ export default class RoomScene extends Phaser.Scene {
 
     this.cameras.main.fadeIn(400, 0, 0, 0);
     this.#playIntroIfNeeded();
+  }
+
+  #createAlmendra() {
+    this.almendra = this.add.sprite(ALMENDRA.x, ALMENDRA.y, 'prop-almendra-0').setOrigin(0, 0);
+    // Just above the cushion's own sort value, so she sits in it rather than
+    // behind it, while the player still passes in front when standing lower.
+    this.almendra.setDepth(ALMENDRA.depth);
+    this.almendra.play('almendra-wag');
+  }
+
+  /**
+   * The letter is the one prop that reacts before it is used: it unfolds as
+   * she walks up to it, so it reads as an invitation rather than a box to tick.
+   */
+  #createLetter() {
+    this.letter = this.add.image(LETTER.x, LETTER.y, 'prop-letter-closed').setOrigin(0.5, 1);
+    this.letter.setDepth(LETTER.y);
+    this.letterOpen = false;
+  }
+
+  #updateLetter() {
+    const distance = Phaser.Math.Distance.Between(this.player.x, this.player.y, LETTER.x, LETTER.y + 14);
+    const shouldOpen = distance < LETTER_OPEN_RADIUS;
+    if (shouldOpen === this.letterOpen) return;
+
+    this.letterOpen = shouldOpen;
+    this.letter.setTexture(shouldOpen ? 'prop-letter-open' : 'prop-letter-closed');
+    if (shouldOpen) {
+      sfx.blip();
+      this.tweens.add({ targets: this.letter, scaleY: 1.12, duration: 130, yoyo: true });
+    }
   }
 
   #createPlayer() {
@@ -284,6 +325,8 @@ export default class RoomScene extends Phaser.Scene {
     }
 
     this.player.setDepth(this.player.y);
+
+    this.#updateLetter();
 
     const target = this.#findTarget();
     this.#updateMarker(target);

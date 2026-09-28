@@ -102,21 +102,6 @@ function createProps(scene) {
     b.dot(12, 6, C.cloth);
   });
 
-  paint(scene, 'prop-shelf', 40, 56, (b) => {
-    b.rect(0, 0, 40, 56, C.woodDark);
-    b.rect(2, 2, 36, 52, C.wood);
-    [4, 20, 36].forEach((y) => b.rect(2, y + 10, 36, 2, C.woodDark));
-    const books = [C.cloth, C.shirt, C.leaf, C.gold, C.creamDark, C.clothDark];
-    [4, 20, 36].forEach((shelfY, row) => {
-      let x = 5;
-      while (x < 34) {
-        const w = 2 + ((x + row) % 3);
-        b.rect(x, shelfY + 2, w, 8, books[(x + row) % books.length]);
-        x += w + 1;
-      }
-    });
-  });
-
   paint(scene, 'prop-bed', 52, 62, (b) => {
     b.rect(0, 0, 52, 7, C.woodDark);      // headboard
     b.rect(2, 1, 48, 4, C.wood);
@@ -153,16 +138,6 @@ function createProps(scene) {
     b.dot(3, 0, C.creamDark);
   });
 
-  paint(scene, 'prop-guitar', 14, 36, (b) => {
-    b.rect(6, 0, 3, 18, C.woodDark);       // neck
-    b.rect(5, 0, 5, 3, C.black);           // head
-    b.rect(3, 17, 9, 10, C.woodLight);     // upper body
-    b.rect(2, 22, 11, 13, C.woodLight);    // lower body
-    b.outline(2, 17, 11, 18, C.woodDark);
-    b.rect(6, 25, 3, 3, C.black);          // sound hole
-    b.vline(7, 3, 22, C.cream);
-  });
-
   paint(scene, 'prop-plant', 18, 26, (b) => {
     b.rect(5, 18, 8, 8, C.wood);
     b.rect(4, 17, 10, 2, C.woodLight);
@@ -171,6 +146,87 @@ function createProps(scene) {
       b.rect(x, y, 5, 4, C.leaf);
       b.rect(x + 1, y + 1, 3, 2, C.leafDark);
     });
+  });
+
+  // Almendra, a dachshund in warm brownish gold. Two frames: the tail wags.
+  const drawAlmendra = (b, tailUp) => {
+    b.rect(7, 4, 15, 5, C.dog);          // long body
+    b.rect(8, 7, 13, 2, C.dogLight);     // belly
+    b.rect(1, 2, 7, 6, C.dog);           // head
+    b.rect(2, 1, 5, 1, C.dog);           // crown
+    b.rect(0, 5, 3, 3, C.dogDark);       // snout
+    b.dot(0, 5, C.black);                // nose
+    b.rect(1, 3, 3, 6, C.dogDark);       // hanging ear
+    b.dot(5, 4, C.black);                // eye
+    b.dot(6, 3, C.dogLight);
+    if (tailUp) {
+      b.rect(21, 1, 2, 3, C.dog);
+      b.rect(22, 0, 2, 2, C.dog);
+    } else {
+      b.rect(21, 3, 3, 2, C.dog);
+      b.rect(23, 2, 2, 2, C.dog);
+    }
+    b.rect(8, 9, 3, 4, C.dog);           // front leg
+    b.rect(12, 9, 3, 3, C.dogDark);      // far front leg
+    b.rect(17, 9, 3, 3, C.dogDark);      // far back leg
+    b.rect(20, 9, 3, 4, C.dog);          // back leg
+    b.rect(8, 12, 3, 1, C.dogDark);
+    b.rect(20, 12, 3, 1, C.dogDark);
+  };
+
+  paint(scene, 'prop-almendra-0', 26, 14, (b) => drawAlmendra(b, false));
+  paint(scene, 'prop-almendra-1', 26, 14, (b) => drawAlmendra(b, true));
+
+  paint(scene, 'prop-dogbed', 38, 20, (b) => {
+    const rows = [5, 2, 0, 0, 2, 5];
+    rows.forEach((inset, i) => {
+      const y = 1 + i * 3;
+      b.rect(2 + inset, y, 34 - inset * 2, 3, C.clothDark);
+      b.rect(4 + inset, y, 30 - inset * 2, 3, C.cloth);
+    });
+    b.rect(8, 6, 22, 8, C.creamDark);    // the cushion she lies on
+    b.rect(9, 7, 20, 6, C.cream);
+  });
+
+  paint(scene, 'prop-bottle', 9, 18, (b) => {
+    b.rect(3, 0, 3, 4, C.glassDark);     // neck
+    b.rect(3, 0, 3, 1, C.gold);          // cap
+    b.rect(2, 3, 5, 2, C.glassDark);     // shoulder
+    b.rect(1, 4, 7, 14, C.glass);        // body
+    b.outline(1, 4, 7, 14, C.glassDark);
+    b.rect(2, 8, 5, 6, C.cream);         // label
+    b.hline(3, 10, 3, C.glassDark);
+    b.hline(3, 12, 3, C.glassDark);
+    b.dot(2, 6, C.white);                // highlight
+  });
+
+  // The letter has two states: the room swaps them as she walks up to it.
+  paint(scene, 'prop-letter-closed', 18, 13, (b) => {
+    b.rect(0, 0, 18, 13, C.creamDark);
+    b.rect(1, 1, 16, 11, C.cream);
+    b.map(1, 1, [
+      '#..............#',
+      '.#............#.',
+      '..#..........#..',
+      '...#........#...',
+      '....#......#....',
+      '.....#....#.....',
+      '......#..#......',
+    ], { '#': C.creamDark });
+    b.rect(7, 5, 4, 4, C.cloth);         // wax seal
+    b.dot(8, 6, C.clothDark);
+    b.dot(9, 7, C.clothDark);
+  });
+
+  paint(scene, 'prop-letter-open', 20, 17, (b) => {
+    b.rect(1, 0, 18, 17, C.creamDark);
+    b.rect(2, 1, 16, 15, C.cream);
+    b.rect(2, 1, 16, 2, C.white);
+    // Lines of writing, ragged like real handwriting.
+    const lines = [[4, 10], [4, 13], [4, 8], [4, 12], [4, 6]];
+    lines.forEach(([x, w], i) => b.hline(x, 5 + i * 2, w, C.creamDark));
+    b.rect(12, 14, 4, 2, C.cloth);       // a little heart at the end
+    b.dot(11, 14, C.cloth);
   });
 
   paint(scene, 'prop-rug', 56, 30, (b) => {

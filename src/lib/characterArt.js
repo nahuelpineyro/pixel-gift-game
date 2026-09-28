@@ -2,14 +2,16 @@ import { PALETTE } from './palette.js';
 
 /**
  * The player sprite: 12x16, three facings (the side view is mirrored for
- * left) and two walk frames each.
+ * left) and two walk frames each. Long dark hair falling past the shoulders.
  */
 export const PLAYER_W = 12;
 export const PLAYER_H = 16;
 
 export const PLAYER_PALETTE = {
   h: PALETTE.hair,
+  l: PALETTE.hairLight,
   s: PALETTE.skin,
+  k: PALETTE.skinShade,
   e: PALETTE.black,
   t: PALETTE.shirt,
   d: PALETTE.shirtDark,
@@ -19,44 +21,46 @@ export const PLAYER_PALETTE = {
 
 const DOWN_HEAD = [
   '...hhhhhh...',
-  '..hhhhhhhh..',
-  '..hssssssh..',
-  '..hsessesh..',
-  '..hssssssh..',
-  '...ssssss...',
+  '..llhhhhll..',
+  '.hhsssssshh.',
+  '.hhsesseshh.',
+  '.hhsskksshh.',
+  '.hh.ssss.hh.',
 ];
 
 const UP_HEAD = [
   '...hhhhhh...',
-  '..hhhhhhhh..',
-  '..hhhhhhhh..',
-  '..hhhhhhhh..',
-  '..hhhhhhhh..',
-  '...ssssss...',
+  '..llhhhhll..',
+  '.hhhhhhhhhh.',
+  '.hhhhhhhhhh.',
+  '.hhhhhhhhhh.',
+  '.hhhhhhhhhh.',
 ];
 
 const SIDE_HEAD = [
   '...hhhhh....',
-  '..hhhhhhh...',
+  '..lhhhhhh...',
   '..hhsssss...',
   '..hhssess...',
-  '..hsssssd...',
-  '...sssss....',
+  '..hhsskss...',
+  '..hhssss....',
 ];
 
+// The hair carries on down past the shoulders for two more rows: at 12px wide
+// it is the only silhouette cue that reads reliably.
 const FRONT_BODY = [
-  '..tttttttt..',
-  '.tttttttttt.',
-  '.stttttttts.',
+  '.hhtttttthh.',
+  '.hhtttttthh.',
+  '.shtttttths.',
   '.stddddddts.',
   '..tttttttt..',
   '..pppppppp..',
 ];
 
 const SIDE_BODY = [
-  '...tttttt...',
-  '..tttttttd..',
-  '..ttttttts..',
+  '..hhtttttt..',
+  '..hhtttttd..',
+  '..hhttttts..',
   '...ttddtt...',
   '...tttttt...',
   '...pppppp...',
