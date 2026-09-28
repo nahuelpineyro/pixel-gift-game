@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- viewport-fit=cover keeps the canvas under the iPhone notch instead of beside it. -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#12101c" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%209%208%22%20shape-rendering%3D%22crispEdges%22%3E%3Crect%20width%3D%229%22%20height%3D%228%22%20fill%3D%22%2312101c%22%2F%3E%3Cpath%20fill%3D%22%23c05a6e%22%20d%3D%22M1%200h2v1H1zM6%200h2v1H6zM0%201h9v3H0zM1%204h7v1H1zM2%205h5v1H2zM3%206h3v1H3zM4%207h1v1H4z%22%2F%3E%3C%2Fsvg%3E" />
+    <title>Para vos</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #12101c;
+        overflow: hidden;
+        /* Stops iOS Safari from selecting text or showing the magnifier on a long press. */
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+        /* Stops pull-to-refresh and rubber-band scrolling from fighting the joystick. */
+        overscroll-behavior: none;
+        touch-action: none;
+      }
+
+      #game {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #game canvas {
+        /* Belt and braces: Phaser sets this too, but a stray upscale filter is fatal to pixel art. */
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
