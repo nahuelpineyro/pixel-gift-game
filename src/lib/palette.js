@@ -38,6 +38,12 @@ export const PALETTE = {
   dogDark: '#8a5a26',
   dogLight: '#d2a15a',
 
+  brick: '#a4543c',
+  brickDark: '#6e3326',
+  stone: '#6d6068',
+  fire: '#e8742c',
+  wine: '#7a1f3a',
+
   glass: '#7fb6a4',
   glassDark: '#4d8271',
 

@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import PixelText from '../ui/PixelText.js';
 import DialogueBox from '../ui/DialogueBox.js';
 import Controls from '../ui/Controls.js';
-import { GIFT, MEMORY_COUNT, memoryById } from '../config/gift.js';
+import { GIFT, MEMORY_COUNT, MEMORY_IDS, memoryById } from '../config/gift.js';
 import { HEX } from '../lib/palette.js';
 import { load, save } from '../lib/save.js';
 import { sfx } from '../lib/sfx.js';
@@ -23,6 +23,8 @@ const FLOOR_PROPS = [
   { key: 'prop-dogbed', x: 232, y: 102 },
   { key: 'prop-bed', x: 14, y: 54, solid: { x: 14, y: 60, w: 52, h: 54 } },
   { key: 'prop-bottle', x: 72, y: 98 },
+  { key: 'prop-oven', x: 226, y: 22, solid: { x: 226, y: 50, w: 44, h: 8 } },
+  { key: 'prop-wine', x: 262, y: 34, depth: 59 },
   { key: 'prop-desk', x: 146, y: 94, solid: { x: 146, y: 108, w: 46, h: 14 } },
   { key: 'prop-mug', x: 162, y: 86 },
   { key: 'prop-plant', x: 20, y: 124, solid: { x: 20, y: 142, w: 18, h: 8 } },
@@ -37,15 +39,12 @@ const LETTER = { x: 286, y: 46 };
  * near; `markerY` is where the floating marker hovers.
  */
 const INTERACTABLES = [
-  { id: 'photo', kind: 'memory', x: 212, y: 58, markerX: 212, markerY: 38 },
-  { id: 'window', kind: 'memory', x: 84, y: 58, markerX: 84, markerY: 42 },
   { id: 'mug', kind: 'memory', x: 169, y: 130, markerX: 167, markerY: 76 },
   { id: 'almendra', kind: 'memory', x: 249, y: 134, markerX: 249, markerY: 86 },
   { id: 'letter', kind: 'memory', x: 286, y: 62, markerX: 286, markerY: 24 },
-  { id: 'bed', kind: 'scenery', x: 80, y: 90, markerX: 40, markerY: 44 },
-  { id: 'bottle', kind: 'scenery', x: 80, y: 122, markerX: 76, markerY: 88 },
-  { id: 'plant', kind: 'scenery', x: 46, y: 144, markerX: 29, markerY: 112 },
-  { id: 'rug', kind: 'scenery', x: 124, y: 148, markerX: 124, markerY: 134 },
+  { id: 'bed', kind: 'memory', x: 80, y: 90, markerX: 40, markerY: 44 },
+  { id: 'bottle', kind: 'memory', x: 80, y: 122, markerX: 76, markerY: 88 },
+  { id: 'oven', kind: 'memory', x: 244, y: 66, markerX: 243, markerY: 14 },
   { id: 'door', kind: 'door', x: 160, y: 58, markerX: 160, markerY: 26 },
 ];
 
@@ -61,7 +60,8 @@ export default class RoomScene extends Phaser.Scene {
 
   create() {
     this.progress = load();
-    this.found = new Set(this.progress.found);
+    // Drop ids from older saves that no longer name a memory, so counts stay right.
+    this.found = new Set(this.progress.found.filter((id) => MEMORY_IDS.includes(id)));
     this.solids = FLOOR_PROPS.filter((prop) => prop.solid).map((prop) => prop.solid);
     // Exposed so the console (and the smoke test) can reach a spot by name.
     this.interactables = INTERACTABLES;

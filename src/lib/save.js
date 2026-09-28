@@ -5,7 +5,7 @@
 
 const KEY = 'pixel-gift-save-v1';
 
-const EMPTY = { found: [], finished: false };
+const EMPTY = { found: [] };
 
 /** Reads saved progress, falling back to a fresh run on any problem. */
 export function load() {
@@ -16,7 +16,6 @@ export function load() {
     const parsed = JSON.parse(raw);
     return {
       found: Array.isArray(parsed.found) ? parsed.found : [],
-      finished: Boolean(parsed.finished),
     };
   } catch {
     return { ...EMPTY };

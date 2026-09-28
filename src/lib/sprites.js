@@ -200,6 +200,34 @@ function createProps(scene) {
     b.dot(2, 6, C.white);                // highlight
   });
 
+  // Brick pizza oven on a stone plinth; the plinth runs past the dome on the
+  // right so the wine glass has somewhere to stand.
+  paint(scene, 'prop-oven', 44, 36, (b) => {
+    b.circle(17, 18, 16, C.brickDark);   // dome
+    b.circle(17, 18, 15, C.brick);
+    [[8, 7], [14, 5], [21, 6], [26, 10], [6, 13], [12, 11], [19, 12], [28, 16]].forEach(([x, y]) => {
+      b.hline(x, y, 3, C.brickDark);     // brick seams
+    });
+    b.rect(24, 0, 4, 6, C.brickDark);    // chimney
+    b.circle(17, 20, 7, C.black);        // mouth
+    b.rect(10, 20, 14, 4, C.black);
+    b.rect(12, 21, 10, 3, C.fire);       // embers
+    [[13, 20], [16, 19], [19, 20], [21, 21]].forEach(([x, y]) => b.dot(x, y, C.glow));
+    b.rect(0, 24, 44, 12, C.stone);      // plinth
+    b.hline(0, 24, 44, C.creamDark);
+    b.hline(0, 30, 44, C.shadow);
+    for (let x = 6; x < 44; x += 11) b.vline(x, 25, 5, C.shadow);
+  });
+
+  paint(scene, 'prop-wine', 7, 12, (b) => {
+    b.rect(0, 0, 7, 5, C.glass);         // bowl
+    b.rect(1, 2, 5, 3, C.wine);
+    b.dot(1, 1, C.white);                // highlight
+    b.vline(3, 5, 5, C.glass);           // stem
+    b.hline(1, 10, 5, C.glass);          // foot
+    b.hline(1, 11, 5, C.glassDark);
+  });
+
   // The letter has two states: the room swaps them as she walks up to it.
   paint(scene, 'prop-letter-closed', 18, 13, (b) => {
     b.rect(0, 0, 18, 13, C.creamDark);

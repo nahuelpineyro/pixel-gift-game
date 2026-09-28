@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 import PixelText from '../ui/PixelText.js';
 import { GIFT } from '../config/gift.js';
 import { HEX } from '../lib/palette.js';
-import { load, reset } from '../lib/save.js';
 import { unlock, sfx } from '../lib/sfx.js';
 
 /**
@@ -17,7 +16,6 @@ export default class TitleScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.scale.gameSize;
-    const progress = load();
 
     this.add.image(0, 0, 'balcony-bg').setOrigin(0, 0);
     this.#addTwinklingStars();
@@ -36,15 +34,7 @@ export default class TitleScene extends Phaser.Scene {
 
     this.tweens.add({ targets: prompt, alpha: 0.25, duration: 700, yoyo: true, repeat: -1 });
 
-    if (progress.finished) {
-      const note = new PixelText(this, 0, 112, GIFT.replayNote, { color: HEX.creamDark });
-      note.setPosition(Math.round((width - note.textWidth) / 2), 112);
-
-      const again = new PixelText(this, 0, 166, 'MANTENÉ APRETADO PARA REINICIAR', { color: HEX.creamDark });
-      again.setPosition(Math.round((width - again.textWidth) / 2), 166);
-    }
-
-    this.#bindStart(progress);
+    this.#bindStart();
   }
 
   #addTwinklingStars() {
@@ -67,9 +57,7 @@ export default class TitleScene extends Phaser.Scene {
     }
   }
 
-  #bindStart(progress) {
-    let held = null;
-
+  #bindStart() {
     const begin = () => {
       // Must happen inside the gesture for iOS to allow audio at all.
       unlock();
@@ -78,22 +66,7 @@ export default class TitleScene extends Phaser.Scene {
       this.time.delayedCall(420, () => this.scene.start('Room'));
     };
 
-    this.input.once('pointerdown', () => {
-      // A long press on a finished save starts over from the beginning.
-      if (progress.finished) {
-        held = this.time.delayedCall(900, () => {
-          reset();
-          begin();
-        });
-        this.input.once('pointerup', () => {
-          if (held) held.remove();
-          begin();
-        });
-        return;
-      }
-      begin();
-    });
-
+    this.input.once('pointerdown', begin);
     this.input.keyboard.once('keydown', begin);
   }
 }

@@ -28,30 +28,24 @@ export const GIFT = {
   /** Shown once, when the room scene starts for the first time. */
   intro: [
     'ESTE ES NUESTRO CUARTO.',
-    'HAY CINCO COSAS ACÁ QUE GUARDAN\nUN RECUERDO NUESTRO.',
+    'HAY SEIS COSAS ACÁ QUE GUARDAN\nUN RECUERDO NUESTRO.',
     'ENCONTRALOS TODOS Y LA PUERTA\nSE VA A ABRIR.',
   ],
 
   /**
-   * The five memories. Order here is the order they are counted in, but she
-   * can find them in any order. Keep exactly five unless you also edit the
+   * The six memories. Order here is the order they are counted in, but she
+   * can find them in any order. Keep exactly six unless you also edit the
    * room layout in src/scenes/RoomScene.js.
    */
   memories: [
     {
-      id: 'photo',
-      name: 'LA FOTO',
+      id: 'almendra',
+      name: 'ALMENDRA',
       lines: [
-        'LA PRIMERA FOTO QUE NOS SACAMOS\nJUNTOS.',
-        'SALIMOS LOS DOS CON CARA RARA\nY IGUAL ES MI FAVORITA.',
-      ],
-    },
-    {
-      id: 'window',
-      name: 'LA VENTANA',
-      lines: [
-        'ACÁ NOS QUEDAMOS MIRANDO\nLA CIUDAD HASTA TARDE.',
-        'VOS DIJISTE QUE LAS LUCES\nPARECÍAN ESTRELLAS CAÍDAS.',
+        'ALMENDRA.\nLA PERRITA QUE AMAMOS TANTO.',
+        'MEDIO METRO DE PERRA\nY DOS METROS DE AMOR.',
+        'ELLA YA ERA TUYA\nMUCHO ANTES DE CONOCERNOS.',
+        'Y UN DÍA ME HIZO LUGAR\nEN SU MANADA.',
       ],
     },
     {
@@ -63,13 +57,25 @@ export const GIFT = {
       ],
     },
     {
-      id: 'almendra',
-      name: 'ALMENDRA',
+      id: 'bed',
+      name: 'LA CAMA',
       lines: [
-        'ALMENDRA.\nLA PERRITA QUE AMAMOS TANTO.',
-        'MEDIO METRO DE PERRA\nY DOS METROS DE AMOR.',
-        'NOS ELIGIÓ A LOS DOS\nEL MISMO DÍA.',
+        'LA CAMA DE LA QUE NO QUEREMOS\nSALIR AL DESPERTAR.',
+        'CINCO MINUTOS MÁS.\nSIEMPRE CINCO MINUTOS MÁS.',
       ],
+    },
+    {
+      id: 'bottle',
+      name: 'EL LUBRICANTE',
+      lines: [
+        'EL LUBRICANTE DEL AMOR.',
+        'NO PREGUNTES QUÉ HACE ACÁ.\nYA SABÉS MUY BIEN QUÉ HACE ACÁ.',
+      ],
+    },
+    {
+      id: 'oven',
+      name: 'EL HORNO',
+      lines: ['NUESTROS VINOS Y PIZZAS\nCASEROS.'],
     },
     {
       id: 'letter',
@@ -83,18 +89,7 @@ export const GIFT = {
   ],
 
   /** Flavour text for the props that are not memories. */
-  scenery: {
-    bed: [
-      'LA CAMA DE LA QUE NO QUEREMOS\nSALIR AL DESPERTAR.',
-      'CINCO MINUTOS MÁS.\nSIEMPRE CINCO MINUTOS MÁS.',
-    ],
-    bottle: [
-      'EL LUBRICANTE DEL AMOR.',
-      'NO PREGUNTES QUÉ HACE ACÁ.\nYA SABÉS MUY BIEN QUÉ HACE ACÁ.',
-    ],
-    plant: ['LA PLANTA QUE JURASTE\nQUE IBAS A MATAR.', 'SIGUE VIVA. COMO NOSOTROS.'],
-    rug: ['ACÁ BAILAMOS UNA VEZ,\nSIN MÚSICA.'],
-  },
+  scenery: {},
 
   /** The door out of the room. */
   door: {
@@ -108,8 +103,9 @@ export const GIFT = {
   balcony: {
     arrival: [
       'SALISTE.',
-      'ES LA MISMA CIUDAD DE SIEMPRE,\nPERO DE NOCHE ES OTRA COSA.',
-      'HAY ALGO ESPERÁNDOTE\nEN LA BARANDA.',
+      'ESTA NOCHE LAS ESTRELLAS\nBAJARON UN POCO MÁS.',
+      'DICEN QUE VINIERON A VERTE.',
+      'Y TE DEJARON ALGO\nEN LA BARANDA.',
     ],
   },
 
@@ -123,14 +119,13 @@ export const GIFT = {
     'CADA COSA QUE ENCONTRASTE\nPASÓ DE VERDAD.',
     'Y ME ACUERDO DE TODAS.',
     'GRACIAS POR CADA DÍA COMÚN,\nQUE AL FINAL SON LOS QUE CUENTAN.',
+    'AUNQUE DISCUTAMOS Y TENGAMOS\nMOMENTOS DIFÍCILES,',
+    'QUIERO QUE SEPAS QUE SIEMPRE\nTE VOY A AMAR.',
     'TE AMO.',
   ],
 
   /** The very last line, held on screen under the hearts. */
   signature: 'FIN  ♥',
-
-  /** Shown on the title screen once the game has been finished. */
-  replayNote: 'YA LA TERMINASTE  ★',
 };
 
 /** Convenience lookups used by the scenes. */

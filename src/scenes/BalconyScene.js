@@ -4,7 +4,7 @@ import DialogueBox from '../ui/DialogueBox.js';
 import Controls from '../ui/Controls.js';
 import { GIFT } from '../config/gift.js';
 import { HEX } from '../lib/palette.js';
-import { load, save } from '../lib/save.js';
+import { reset } from '../lib/save.js';
 import { sfx } from '../lib/sfx.js';
 
 const SPEED = 52;
@@ -22,7 +22,6 @@ export default class BalconyScene extends Phaser.Scene {
   }
 
   create() {
-    this.progress = load();
     this.opened = false;
 
     this.add.image(0, 0, 'balcony-bg').setOrigin(0, 0).setDepth(0);
@@ -87,8 +86,8 @@ export default class BalconyScene extends Phaser.Scene {
 
   #openGift() {
     this.opened = true;
-    this.progress = { ...this.progress, finished: true };
-    save(this.progress);
+    // The run is over: wipe it so the next visit starts from scratch.
+    reset();
 
     sfx.reveal();
     this.marker.setVisible(false);
